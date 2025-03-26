@@ -18,4 +18,4 @@ Resume Maker Tool collects user data and generates an ATS-friendly resume in a s
 This software is the exclusive property of **FIND Services** and is protected under applicable intellectual property laws. Unauthorized reproduction, distribution, or modification is strictly prohibited.  
 
 📜 **Privacy Policy & License**  
-For privacy policies and licensing details, refer to the [LICENSE](LICENSE) file.  
+For privacy policies and licensing details, refer to the [LICENSE](https://github.com/sirri-ayongwa/resume-maker-tool/blob/main/LICENSE) file.  
