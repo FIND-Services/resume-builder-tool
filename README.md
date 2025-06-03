@@ -9,7 +9,7 @@ Resume Maker Tool collects user data and generates an ATS-friendly resume in a s
 - Privacy-Focused – All data remains local and secure.  
 
 ## Usage
-1. Run the application (`python main.py`).  
+1. Run the application (`python resume_maker.py`).  
 2. Enter personal details, education, work experience, and skills.  
 3. Click "Generate" to preview the resume fields.  
 4. Click "Submit" to generate and save your resume as a **.docx** file.  
