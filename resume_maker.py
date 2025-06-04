@@ -16,7 +16,7 @@ def create_education_fields(num_education):
     edu_location_entries = []
 
     for i in range(num_education):
-        row_offset = 17 + i * 5 # Adjusting row based on number of fields added
+        row_offset = 18 + i * 5 # Adjusting row based on number of fields added
 
         tk.Label(app, text=f"Education {i + 1} School Name:").grid(row=row_offset, column=0, sticky="e", padx=(5, 0))
         institution_entry = tk.Entry(app)
@@ -52,7 +52,7 @@ def create_work_experience_fields(num_experiences):
     work_location_entries = []
 
     for i in range(num_experiences):
-        row_offset = 19 + num_education * 4 + i * 4  # Adjusting row based on education fields
+        row_offset = 20 + num_education * 4 + i * 4  # Adjusting row based on education fields
 
         tk.Label(app, text=f"Work Experience {i + 1} Company Name:").grid(row=row_offset, column=0, sticky="e", padx=(5, 0))
         company_entry = tk.Entry(app)
@@ -186,7 +186,7 @@ def submit_details():
     summary_heading = document.add_heading("SUMMARY", level=2)
     run = summary_heading.runs[0]
     run.bold = True
-    summary_paragraph = document.add_paragraph(summary_entry.get("1.0", "end").strip())
+    summary_paragraph = document.add_paragraph(summary_entry.get("1.0", "end").strip() + " Skills include " + {skills_entry.get("1.0")} + ".")
     insertHR(summary_paragraph)
 
     # Add Work Experience
@@ -274,16 +274,6 @@ def submit_details():
     contact_us_paragraph = document.add_paragraph(f"To get a resume review, ", style="List Bullet")
     add_hyperlink(contact_us_paragraph, "CONTACT US", "https://wefind.space/contact/")
 
-    #Add Skills
-    # document.add_heading("Skills", level=2)
-    # skills = skills_entry.get("1.0").split(",")  # Assume skills are comma-separated
-    # first_skill = True
-    # for skill in skills:
-    #     skill_paragraph = document.add_paragraph(f"{skill.strip()}", style="List Bullet")
-    #     if first_skill:
-    #         insertHR(skill_paragraph)
-    #         first_skill = False
-
     # Save the document
     file_path = filedialog.asksaveasfilename(defaultextension=".docx",
                                                 filetypes=[("Word Documents", "*.docx")],
@@ -297,66 +287,69 @@ app = tk.Tk()
 app.title("Resume Maker")
 
 # Personal Information
-personal_information_label = tk.Label(app, text="Personal Information:", font=("Helvetica", 12, "bold")).grid(row=0, column=0, sticky="w", pady=5)
+tk.Label(app, text="Personal Information:", font=("Helvetica", 12, "bold")).grid(row=0, column=0, sticky="w", pady=5)
 personal_information_entry = tk.Entry(app)
 
-tk.Label(app, text="First Name:").grid(row=1, column=0, sticky="w", padx=5)
+#Note about required fields
+tk.Label(app, text="NOTE: fields with an asterisk (*) next to it are required.").grid(row=1, column=0, sticky="w", padx=5)
+
+tk.Label(app, text="First Name:*").grid(row=2, column=0, sticky="w", padx=5)
 first_name_entry = tk.Entry(app)
-first_name_entry.grid(row=1, column=1)
+first_name_entry.grid(row=2, column=1)
 
-tk.Label(app, text="Middle Name:").grid(row=2, column=0, sticky="w", padx=5)
+tk.Label(app, text="Middle Name:").grid(row=3, column=0, sticky="w", padx=5)
 middle_name_entry = tk.Entry(app)
-middle_name_entry.grid(row=2, column=1)
+middle_name_entry.grid(row=3, column=1)
 
-tk.Label(app, text="Last Name:").grid(row=3, column=0, sticky="w", padx=5)
+tk.Label(app, text="Last Name:*").grid(row=4, column=0, sticky="w", padx=5)
 last_name_entry = tk.Entry(app)
-last_name_entry.grid(row=3, column=1)
+last_name_entry.grid(row=4, column=1)
 
-tk.Label(app, text="Email Address:").grid(row=4, column=0, sticky="w", padx=5)
+tk.Label(app, text="Email Address:*").grid(row=5, column=0, sticky="w", padx=5)
 email_entry = tk.Entry(app)
-email_entry.grid(row=4, column=1)
+email_entry.grid(row=5, column=1)
 
-tk.Label(app, text="Location (City, Country):").grid(row=5, column=0, sticky="w", padx=5)
+tk.Label(app, text="Location (City, State/Country):*").grid(row=6, column=0, sticky="w", padx=5)
 location_entry = tk.Entry(app)
-location_entry.grid(row=5, column=1)
+location_entry.grid(row=6, column=1)
 
-tk.Label(app, text="Mobile Number (+x xxx xxx xxxx):").grid(row=6, column=0, sticky="w", padx=5)
+tk.Label(app, text="Mobile Number (include country code):*").grid(row=7, column=0, sticky="w", padx=5)
 mobile_entry = tk.Entry(app)
-mobile_entry.grid(row=6, column=1)
+mobile_entry.grid(row=7, column=1)
 
-tk.Label(app, text="LinkedIn Profile:").grid(row=7, column=0, sticky="w", padx=5)
+tk.Label(app, text="LinkedIn Profile:").grid(row=8, column=0, sticky="w", padx=5)
 linkedin_entry = tk.Entry(app)
-linkedin_entry.grid(row=7, column=1)
+linkedin_entry.grid(row=8, column=1)
 
-tk.Label(app, text="Portfolio Link:").grid(row=8, column=0, sticky="w", padx=5)
+tk.Label(app, text="Portfolio Link:").grid(row=9, column=0, sticky="w", padx=5)
 portfolio_entry = tk.Entry(app)
-portfolio_entry.grid(row=8, column=1)
+portfolio_entry.grid(row=9, column=1)
 
 # Summary Section
-summary_label = tk.Label(app, text="Summary:", font=("Helvetica", 12, "bold")).grid(row=9, column=0, sticky="w", pady=5)
+summary_label = tk.Label(app, text="Summary:*", font=("Helvetica", 12, "bold")).grid(row=10, column=0, sticky="w", pady=5)
 summary_entry = tk.Text(app, height=4, width=50)
-summary_entry.grid(row=10, column=0, columnspan=2)
+summary_entry.grid(row=11, column=0, columnspan=2)
 
 # Skills Section
-skills_label = tk.Label(app, text="Skills:", font=("Helvetica", 12, "bold")).grid(row=11, column=0, sticky="w", pady=5)
+skills_label = tk.Label(app, text="Skills (ex. skill1, skill2, and skill3):", font=("Helvetica", 12, "bold")).grid(row=12, column=0, sticky="w", pady=5)
 skills_entry = tk.Text(app, height=1, width=50)
-skills_entry.grid(row=12, column=0, columnspan=2)
+skills_entry.grid(row=13, column=0, columnspan=2)
 
 # Work Experience & Education Section
-tk.Label(app, text="Work Experience & Education:", font=("Helvetica", 12, "bold")).grid(row=13, column=0, sticky="w", pady=5)
+tk.Label(app, text="Work Experience & Education:", font=("Helvetica", 12, "bold")).grid(row=14, column=0, sticky="w", pady=5)
 
 # Number of Entries
-entry_label = tk.Label(app, text="Number of Work Experience Entries:").grid(row=14, column=0, sticky="w", padx=5)
+entry_label = tk.Label(app, text="Number of Work Experience Entries (>0):*").grid(row=15, column=0, sticky="w", padx=5)
 num_experiences_entry = tk.Entry(app)
-num_experiences_entry.grid(row=14, column=1)
+num_experiences_entry.grid(row=15, column=1)
 
-education_label = tk.Label(app, text="Number of Education Entries:").grid(row=15, column=0, sticky="w", padx=5)
+education_label = tk.Label(app, text="Number of Education Entries (>0):*").grid(row=16, column=0, sticky="w", padx=5)
 num_education_entry = tk.Entry(app)
-num_education_entry.grid(row=15, column=1)
+num_education_entry.grid(row=16, column=1)
 
 # Generate Fields Button
 generate_button = tk.Button(app, text="Generate Fields", command=generate_fields)
-generate_button.grid(row=16, column=0, columnspan=2,sticky="w")
+generate_button.grid(row=17, column=0, columnspan=2,sticky="w")
 
 # Submit Button
 submit_button = tk.Button(app, text="Submit", command=submit_details)
