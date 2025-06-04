@@ -186,7 +186,7 @@ def submit_details():
     summary_heading = document.add_heading("SUMMARY", level=2)
     run = summary_heading.runs[0]
     run.bold = True
-    summary_paragraph = document.add_paragraph(summary_entry.get("1.0", "end").strip() + " Skills include " + {skills_entry.get("1.0")} + ".")
+    summary_paragraph = document.add_paragraph(summary_entry.get("1.0", "end").strip() + " Skills include " + skills_entry.get("1.0", "end") + ".")
     insertHR(summary_paragraph)
 
     # Add Work Experience
