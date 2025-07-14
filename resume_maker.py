@@ -75,17 +75,44 @@ def create_work_experience_fields(num_experiences):
         work_location_entries.append(work_location_entry)
 
 
+def create_references_fields(num_references):
+    global reference_name_entries, reference_position_entries, reference_email_entries
+    reference_name_entries = []
+    reference_position_entries = []
+    reference_email_entries = []
+
+    for i in range(num_references):
+        row_offset = 24 + num_references * 4 + i * 4  # Adjusting row based on education fields
+
+        tk.Label(app, text=f"Reference {i + 1} Full Name:").grid(row=row_offset, column=0, sticky="e", padx=(5, 0))
+        name_entry = tk.Entry(app)
+        name_entry.grid(row=row_offset, column=1)
+        reference_name_entries.append(name_entry)
+    
+        tk.Label(app, text=f"Reference {i + 1} Position:").grid(row=row_offset + 1, column=0, sticky="e", padx=(5, 0))
+        position_entry = tk.Entry(app)
+        position_entry.grid(row=row_offset + 1, column=1)
+        reference_position_entries.append(position_entry)
+
+        tk.Label(app, text=f"Reference {i + 1} Email:").grid(row=row_offset + 2, column=0, sticky="e", padx=(5, 0))
+        email_entry = tk.Entry(app)
+        email_entry.grid(row=row_offset + 2, column=1)
+        reference_email_entries.append(email_entry)
+
+
 def adjust_alignment():
     for widget in app.grid_slaves():
         widget.grid_configure(sticky="w")
 
 def generate_fields():
-    global num_education, num_experiences
+    global num_education, num_experiences, num_references
     num_education = int(num_education_entry.get())
     num_experiences = int(num_experiences_entry.get())
+    num_references = int(num_references_entry.get())
     create_education_fields(num_education)
     create_work_experience_fields(num_experiences)
-    submit_button.grid(row=39 + num_education * 4 + num_experiences * 3, column=0, columnspan=2)
+    create_references_fields(num_references)
+    submit_button.grid(row=39 + num_education * 4 + num_experiences * 3 + num_references * 3, column=0, columnspan=2)
     adjust_alignment()
 
 def add_hyperlink(paragraph, text, url):
@@ -253,11 +280,57 @@ def submit_details():
         document.add_paragraph(f"Awards: HERE", style="List Bullet")
         document.add_paragraph(f"Grade: HERE", style="List Bullet")
         document.add_paragraph(f"Project: HERE", style="List Bullet")
+    
+    # Add References
+    reference_heading = document.add_heading("REFERENCES", level=2)
+    run = reference_heading.runs[0]
+    run.bold = True
+    temp_paragraph = document.add_paragraph("")
+    insertHR(temp_paragraph)
+    if num_references == 0:
+        document.add_paragraph(f"Available upon request", style="List Bullet")
+    else:
+        for i in range(num_references):
+            name = reference_name_entries[i].get()
+            position = reference_position_entries[i].get()
+            email = reference_email_entries[i].get()
+            document.add_paragraph(f"{name}, {position}, {email}", style="List Bullet")
+    
+    # Add Skills
+    reference_heading = document.add_heading("SKILLS", level=2)
+    run = reference_heading.runs[0]
+    run.bold = True
+    temp_paragraph = document.add_paragraph("")
+    insertHR(temp_paragraph)
+    skills = skills_entry.get('1.0', 'end').split(",")
+    for skill in skills:
+        document.add_paragraph(f"{skill}", style="List Bullet")
+    
+    # Add Languages
+    reference_heading = document.add_heading("LANGUAGES", level=2)
+    run = reference_heading.runs[0]
+    run.bold = True
+    temp_paragraph = document.add_paragraph("")
+    insertHR(temp_paragraph)
+    languages = languages_entry.get('1.0', 'end').split(",")
+    for language in languages:
+        document.add_paragraph(f"{language}", style="List Bullet")
+    
+    # Add Certifications
+    reference_heading = document.add_heading("Certifications", level=2)
+    run = reference_heading.runs[0]
+    run.bold = True
+    temp_paragraph = document.add_paragraph("")
+    insertHR(temp_paragraph)
+    certifications = certification_entry.get('1.0', 'end').split(",")
+    for certification in certifications:
+        document.add_paragraph(f"{certification}", style="List Bullet")
 
     # Add Additional Information
     additional_information_heading = document.add_heading("ADDITIONAL INFORMATION", level=2)
     run = additional_information_heading.runs[0]
     run.bold = True
+    temp_paragraph = document.add_paragraph("")
     first_paragraph = document.add_paragraph(f"Technical Skills: HERE (mention technologies you are proficient in, e.g. Microsoft, Canva, Trello, HTML,  copy from job description, etc)", style="List Bullet")
     insertHR(first_paragraph)
     document.add_paragraph(f"Languages: HERE e.g. Spanish (LEVEL e.g. Native)", style="List Bullet")
@@ -331,25 +404,39 @@ summary_entry = tk.Text(app, height=4, width=50)
 summary_entry.grid(row=11, column=0, columnspan=2)
 
 # Skills Section
-skills_label = tk.Label(app, text="Skills (ex. skill1, skill2, and skill3):", font=("Helvetica", 12, "bold")).grid(row=12, column=0, sticky="w", pady=5)
+skills_label = tk.Label(app, text="Skills (ex. skill1,skill2,skill3):", font=("Helvetica", 12, "bold")).grid(row=12, column=0, sticky="w", pady=5)
 skills_entry = tk.Text(app, height=1, width=50)
 skills_entry.grid(row=13, column=0, columnspan=2)
 
+# Languages Section
+languages_label = tk.Label(app, text="Languages (ex. language 1,language2):", font=("Helvetica", 12, "bold")).grid(row=14, column=0, sticky="w", pady=5)
+languages_entry = tk.Text(app, height=1, width=50)
+languages_entry.grid(row=15, column=0, columnspan=2)
+
+# Certification Section
+certification_label = tk.Label(app, text="Certifications (ex. certification1,certification2):", font=("Helvetica", 12, "bold")).grid(row=16, column=0, sticky="w", pady=5)
+certification_entry = tk.Text(app, height=1, width=50)
+certification_entry.grid(row=17, column=0, columnspan=2)
+
 # Work Experience & Education Section
-tk.Label(app, text="Work Experience & Education:", font=("Helvetica", 12, "bold")).grid(row=14, column=0, sticky="w", pady=5)
+tk.Label(app, text="Work Experience & Education:", font=("Helvetica", 12, "bold")).grid(row=18, column=0, sticky="w", pady=5)
 
 # Number of Entries
-entry_label = tk.Label(app, text="Number of Work Experience Entries (>0):*").grid(row=15, column=0, sticky="w", padx=5)
+entry_label = tk.Label(app, text="Number of Work Experience Entries (>0):*").grid(row=19, column=0, sticky="w", padx=5)
 num_experiences_entry = tk.Entry(app)
-num_experiences_entry.grid(row=15, column=1)
+num_experiences_entry.grid(row=19, column=1)
 
-education_label = tk.Label(app, text="Number of Education Entries (>0):*").grid(row=16, column=0, sticky="w", padx=5)
+education_label = tk.Label(app, text="Number of Education Entries (>0):*").grid(row=20, column=0, sticky="w", padx=5)
 num_education_entry = tk.Entry(app)
-num_education_entry.grid(row=16, column=1)
+num_education_entry.grid(row=20, column=1)
+
+reference_label = tk.Label(app, text="Number of References:*").grid(row=21, column=0, sticky="w", padx=5)
+num_references_entry = tk.Entry(app)
+num_references_entry.grid(row=21, column=1)
 
 # Generate Fields Button
 generate_button = tk.Button(app, text="Generate Fields", command=generate_fields)
-generate_button.grid(row=17, column=0, columnspan=2,sticky="w")
+generate_button.grid(row=22, column=0, columnspan=2,sticky="w")
 
 # Submit Button
 submit_button = tk.Button(app, text="Submit", command=submit_details)
